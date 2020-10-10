@@ -1,0 +1,167 @@
+<div class="conntainer">
+  <h2 align="center">Product Listing</h2>
+  <button
+    type="button"
+    class="btn btn-primary"
+    [routerLink]="['/', 'add-product']"
+    style="margin-left: 85%"
+  >
+    Add New Product</button
+  ><br /><br />
+  <div class="card">
+    <div class="card-body">
+      <input
+        type="search"
+        placeholder="Filter"
+        aria-label="Filter"
+        name="search"
+        [(ngModel)]="searchText"
+        style="margin-left: 20px"
+      /><br />
+      <table class="table row-border hover w-100">
+        <thead>
+          <tr>
+            <th>Id</th>
+            <th>Product Name</th>
+            <th>Product Category</th>
+            <th>Product Price</th>
+            <th>Product Description</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody *ngIf="products?.length !== 0">
+          <tr
+            *ngFor="
+              let product of products
+                | filterData: searchText:['product_name', 'product_category'];
+              let i = index
+            "
+          >
+            <td>{{ product.id }}</td>
+            <td>{{ product.product_name }}</td>
+            <td>{{ product.product_category }}</td>
+            <td>{{ product.product_price }}</td>
+            <td>{{ product.product_description }}</td>
+            <td>
+              <button
+                class="btn btn-primary"
+                (click)="openEditModal(content, product)"
+              >
+                Edit</button
+              >&nbsp;
+              <button
+                type="button"
+                class="btn btn-danger"
+                (click)="deleteProduct(product.id)"
+              >
+                Delete</button
+              >&nbsp;
+              <button
+                type="button"
+                class="btn btn-primary"
+                (click)="viewProductModal(viewModal, product)"
+              >
+                View
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<ng-template #content let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Product Update</h4>
+    <button
+      type="button"
+      class="close"
+      aria-label="Close"
+      (click)="modal.dismiss('Cross click')"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form [formGroup]="ProductForm">
+      <div class="form-group">
+        <label for="">Add Image :</label>
+        <input
+          type="file"
+          class="form-control"
+          formControlName="product_image"
+          name="product_image"
+        />
+      </div>
+      <div class="form-group">
+        <label for="product_name">Product Name :</label>
+        <input
+          type="text"
+          class="form-control"
+          formControlName="product_name"
+        />
+      </div>
+      <div class="form-group">
+        <label for="category">Product Category</label>
+        <select
+          name=""
+          id=""
+          class="form-control"
+          formControlName="product_category"
+        >
+          <option value="null" disabled>--Choose Category--</option>
+          <option *ngFor="let category of categories" [ngValue]="category.name">
+            {{ category.name }}
+          </option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="price">Price :</label>
+        <input
+          type="text"
+          class="form-control"
+          formControlName="product_price"
+        />
+      </div>
+      <div class="form-group">
+        <label for="description">Description :</label>
+        <input
+          type="text"
+          class="form-control"
+          formControlName="product_description"
+        />
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark" (click)="editProduct()">
+      Save
+    </button>
+  </div>
+</ng-template>
+
+<ng-template #viewModal let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">View Product</h4>
+    <button
+      type="button"
+      class="close"
+      aria-label="Close"
+      (click)="modal.dismiss('Cross click')"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="card">
+      <div class="card-body" *ngIf="viewData">
+        <b>Product Image :</b> {{ viewData.images.image }}<br />
+        <b>Product Name :</b> {{ viewData.product_name }}<br />
+        <b>Product Price :</b> {{ viewData.product_price }}<br />
+        <b>Product Category :</b> {{ viewData.product_category }}<br />
+        <b>Product Description :</b> {{ viewData.product_description }}<br />
+      </div>
+    </div>
+  </div>
+</ng-template>
