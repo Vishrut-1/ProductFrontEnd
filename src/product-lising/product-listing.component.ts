@@ -27,7 +27,6 @@ export class ProductListing implements OnInit, AfterViewInit {
   ngOnInit() {
     this.getProductList();
     this.ProductForm = new FormGroup({
-      product_image: new FormControl(),
       product_name: new FormControl(),
       product_category: new FormControl(),
       product_price: new FormControl(),
@@ -57,7 +56,6 @@ export class ProductListing implements OnInit, AfterViewInit {
     this.modalService.open(content, { ariaLabelledBy: "modal-basic-title" });
     this.ProductForm.patchValue({
       product_name: data.product_name,
-      product_image: data.product_image,
       product_price: data.product_price,
       product_description: data.product_description,
       product_category: data.product_category,
